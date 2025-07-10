@@ -1,0 +1,32 @@
+name: macOS-CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-14
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: "3.10"
+          environment-file: environment.yml
+          auto-activate-base: false
+          activate-environment: aivideo
+      - name: Lint
+        run: |
+          source ~/.bashrc
+          conda activate aivideo
+          flake8 backend aivideo
+      - name: Tests
+        run: |
+          source ~/.bashrc
+          conda activate aivideo
+          pytest

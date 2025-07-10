@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+static/
+lora/
+node_modules/
